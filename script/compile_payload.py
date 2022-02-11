@@ -2,7 +2,7 @@ import subprocess
 
 # payload = "chemain vers le fichier payload.asm"
 
-def compile(payload):
+def compile_pay(payload):
     cmd = "nasm -f elf64 -o out.o "+ payload +".asm; ld -o payload out.o"
     subprocess.call(cmd, shell=True)
 
