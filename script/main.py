@@ -1,5 +1,4 @@
-import imp
-from hexa_lendian import to_hexa_lendian
+from script.hexa_lendian import to_hexa_lendian
 
 if __name__ == '__main__':
     """
