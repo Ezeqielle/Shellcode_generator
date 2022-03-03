@@ -177,6 +177,7 @@ def parse_rep_value(rep_key, parsed_args):
         else:
             try:
                 rep_value = int(rep_key)
+                
             except ValueError:
                 rep_value = rep_key
         parsed_args[rep_key] = rep_value
@@ -203,7 +204,7 @@ def parse_replacement_instructions(parsed_args, rep_lines):
                 rep_args_split = rep_line[i].split(arithmetic_instruction)
                 for j in range(2):
                     parsed_val = parse_rep_value(rep_args_split[j], parsed_args)
-                    if i == 0:
+                    if j == 0:
                         value = parsed_val
                     elif arithmetic_instruction == '+':
                         value += parsed_val
@@ -249,9 +250,11 @@ def morph_code(asm_file_path):
         if parsed_asm["lines"][curr_line]["instructions"] != {} and not "replacement_instructions" in parsed_asm["lines"][curr_line]:
             if parsed_asm["lines"][curr_line]["instructions"]["name"] in KNOWN_ASM_INSTRUCTIONS:
                 if KNOWN_ASM_INSTRUCTIONS[parsed_asm["lines"][curr_line]["instructions"]["name"]]["equivalent_mods"] != []:
-                     if randint(0, 10) >= 7:
-                        parsed_asm["lines"][curr_line]["replacement_instructions"] = get_replacement_instructions(parsed_asm["lines"][curr_line]["instructions"], KNOWN_ASM_INSTRUCTIONS[parsed_asm["lines"][curr_line]["instructions"]["name"]]["equivalent_mods"])
-                        lines_generated +=1
+                    if randint(0, 10) >= 7:
+                        rep_inst = get_replacement_instructions(parsed_asm["lines"][curr_line]["instructions"], KNOWN_ASM_INSTRUCTIONS[parsed_asm["lines"][curr_line]["instructions"]["name"]]["equivalent_mods"])
+                        if rep_inst != []:
+                            parsed_asm["lines"][curr_line]["replacement_instructions"] = rep_inst
+                            lines_generated +=1
 
         if curr_line < lines_num - 1 :
             curr_line += 1
@@ -315,8 +318,8 @@ if __name__ == '__main__':
     
     gen_is_unique = False
     while not gen_is_unique:
-        gen_parsed_asm = morph_code("reverse_shell.asm")
-        gen_is_unique = check_is_unique(gen_parsed_asm, "reverse_shell.asm")
+        gen_parsed_asm = morph_code("../test/reverse_shell.asm")
+        gen_is_unique = check_is_unique(gen_parsed_asm, "../test/reverse_shell.asm")
     
     
 
