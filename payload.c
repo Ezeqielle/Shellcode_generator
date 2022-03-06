@@ -1,0 +1,1 @@
+int main(int argc, char **argv){char code[] = "H1ÀH1ÛH1öH1";int (*func)();func = (int (*)())code;(int)(*func)()}
