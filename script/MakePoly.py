@@ -361,6 +361,7 @@ def encode_shell_code(shell_code_bytes_strings):
 
 def write_payloadc(payload):
     payloadc_file = "payload.c"
+    payload = payload.replace("\\", "\\\\")
     with open(payloadc_file, 'w') as f:
         content = 'int main(int argc, char **argv){char code[] = "'+ payload +'";int (*func)();func = (int (*)())code;(int)(*func)()}'
         f.write(content)
