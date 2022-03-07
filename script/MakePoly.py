@@ -365,6 +365,9 @@ def write_payloadc(payload):
     with open(payloadc_file, 'w') as f:
         content = 'int main(int argc, char **argv){char code[] = "'+ payload +'";int (*func)();func = (int (*)())code;(int)(*func)();}'
         f.write(content)
+    
+    cmdCompileC = "gcc -o exec_c payload.c -fno-stack-protector -z execstack"
+    subprocess.call(cmdCompileC, shell=True)
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
